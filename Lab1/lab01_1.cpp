@@ -1,12 +1,6 @@
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <chrono>
 
 using namespace std;
-using namespace chrono;
 
 bool isMedian(int* arr, int N, int K, int median, bool &exists) {
     int prefixSum[N];
@@ -46,60 +40,17 @@ int findMax(int* arr, int max, int N, int K){
     return median;
 }
 
-
 int main(){
 
-    // Clock starts
-    auto start_time = high_resolution_clock::now();
-
-    ifstream inFile;
     int N, K, mx = -1;
+    cin >> N >> K;
+    int* arr = new int[N];
 
-    for(int j=0; j<21; j++){
-        inFile.open("cereal\\input" + to_string(j) + ".txt");
-
-        if (!inFile.is_open()) {
-            cerr << "Failed to open the input file." << std::endl;
-            return 1;
-        }
-
-        inFile >> N;
-        inFile >> K;
-
-        int* arr = new int[N];
-
-        for(int i=0; i<N; i++){
-            inFile >> arr[i];
-            mx = max(arr[i],mx);
-        }
-
-        inFile.close();
-        
-        int med = findMax(arr, mx, N, K);
-
-        inFile.open("cereal\\output" + to_string(j) + ".txt");
-
-        if (!inFile.is_open()) {
-            cerr << "Failed to open the input file." << endl;
-            return 1;
-        }
-
-        inFile >> N;
-        if(med != N) {
-            cout << "Error at ex" << j << ": " << med << " " << N << endl;
-        }
-
-        inFile.close();
-
+    for(int i=0; i<N; i++){
+        cin >> arr[i];
+        mx = max(arr[i],mx);
     }
-
-    // Clock stops
-    auto end_time = high_resolution_clock::now();
-
-    // Calculate the duration in milliseconds
-    auto duration = duration_cast<milliseconds>(end_time - start_time);
-    cout << "Time taken: " << duration.count() /1000.0 << " seconds" << endl;
-
+    cout << findMax(arr, mx, N, K) << endl;
     return 0;
 }
 
