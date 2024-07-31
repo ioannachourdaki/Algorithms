@@ -1,14 +1,8 @@
 #include <iostream>
 #include <algorithm>
-#include <fstream>
-#include <string>
 #include <vector>
-#include <unordered_map>
-#include <chrono>
 
-using namespace std;
-using namespace chrono;
-  
+using namespace std;  
 
 typedef pair<int, int> iPair; 
 
@@ -146,63 +140,26 @@ void BinarySearch(Graph &g, int max_p, int max_w){
 
 int main(){
 
-    ifstream inFile;
     int N, M, u, v, p, w;
 
-    for(int j=0; j<31; j++){
-        
-        // Clock starts
-        auto start_time = high_resolution_clock::now();
-
-        inFile.open("bicriteriamst\\input" + to_string(j) + ".txt");
-
-        if (!inFile.is_open()) {
-            cerr << "Failed to open the input file." << std::endl;
-            return 1;
-        }
-
-        inFile >> N;
-        inFile >> M;
+        cin >> N >> M;
 
         Graph g(N,M);
         int max_p = 0, max_w = 0;
 
         for(int i = 0; i<M; i++){
-            inFile >> u >> v >> p >> w;
+            cin >> u >> v >> p >> w;
             max_p = max(p, max_p);
             max_w = max(w, max_p);
             g.addEdge(u, v, p, w);
         }
-
-        inFile.close();
         
         BinarySearch(g, max_p, max_w);
 
         int res1 = g.sum_p / __gcd(g.sum_p, g.sum_w);
         int res2 = g.sum_w / __gcd(g.sum_p, g.sum_w);
 
-        inFile.open("bicriteriamst\\output" + to_string(j) + ".txt");
-
-        if (!inFile.is_open()) {
-            cerr << "Failed to open the input file." << endl;
-            return 1;
-        }
-
-        int x,y;
-        inFile >> x >> y;
-        if((x != res1) || (y != res2)) {
-            cout << "Error at ex" << j << ": " << x << "," << res1 << " " << y << "," << res2 << endl;
-        }
-
-        inFile.close();
-
-        // Clock stops
-        auto end_time = high_resolution_clock::now();
-
-        // Calculate the duration in milliseconds
-        auto duration = duration_cast<milliseconds>(end_time - start_time);
-        cout << j << ": Time taken: " << duration.count() /1000.0 << " seconds" << endl;
-    }
+        cout << res1 << " " << res2 << endl;
 
     return 0;
 }
